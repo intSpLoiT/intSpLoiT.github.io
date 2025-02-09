@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Scan - IntSpLoiT</title>
+    <style>
+        /* Universal Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #0F0F0F;
+            color: #00FF00;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Container Styling */
+        .container {
+            background-color: #1D1D1D;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+            border: 1px solid #00FF00;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        /* Header Styling */
+        h1 {
+            font-size: 3rem;
+            color: #00FF00;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+        }
+
+        /* Input Styling */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #121212;
+            color: #00FF00;
+            font-size: 1.2rem;
+            border: 2px solid #00FF00;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Input Focus Effect */
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 15px #4CAF50;
+        }
+
+        /* Button Styling */
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #00FF00;
+            color: #0F0F0F;
+            font-size: 1.4rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Button Hover Effect */
+        button:hover {
+            background-color: #4CAF50;
+            transform: scale(1.05);
+        }
+
+        /* Result Section Styling */
+        .result {
+            background-color: #121212;
+            color: #00FF00;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+            font-size: 1.2rem;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* Footer Styling */
+        footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            font-size: 0.8rem;
+            color: #00FF00;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        footer a {
+            color: #00FF00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Pulse Animation */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(0, 255, 0, 0.7);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Port Scan - IntSpLoiT</h1>
+        <form method="POST">
+            <input type="text" name="ip" id="ip" placeholder="Target IP Address" required />
+            <input type="text" name="ports" id="ports" placeholder="Ports (e.g., 80, 443)" />
+            <button type="submit">Initiate Scan</button>
+        </form>
+
+        {% if result %}
+        <div class="result">
+            <h2>Scan Results:</h2>
+            <pre>{{ result }}</pre>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>Powered by <strong>IntSpLoiT</strong> | <a href="/privacy_policy">Privacy Policy</a></p>
+    </footer>
+
+</body>
+</html>
