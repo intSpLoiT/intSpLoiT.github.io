@@ -1,287 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IntFramework Web GUI</title>
-    <style>
-        /* Genel Stil ve Arka Plan */
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: #33FF00; /* Hacker yeşili */
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            flex-direction: column;
-        }
+#!/usr/bin/env python3
+from flask import Flask, render_template, request
+import subprocess
+import os
+import socket
+from concurrent.futures import ThreadPoolExecutor
 
-        /* Animasyonlu Logo */
-        .logo-container {
-            text-align: center;
-            animation: fadeIn 2s ease-in-out;
-        }
+app = Flask(__name__)
 
-        .logo-container img {
-            width: 150px;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #33FF00;
-        }
+# Güvenlik kontrolü için fonksiyon
+def is_safe_input(user_input):
+    return "../" not in user_input and ";" not in user_input and "|" not in user_input
 
-        h1 {
-            font-size: 48px;
-            font-weight: bold;
-            text-shadow: 2px 2px 10px #33FF00;
-            animation: slideIn 2s ease-in-out;
-        }
 
-        /* Açıklama */
-        .description {
-            font-size: 18px;
-            color: #aaa;
-            text-align: center;
-            margin-top: 20px;
-            animation: fadeIn 3s ease-in-out 1.5s forwards;
-        }
+app = Flask(__name__)
 
-        /* Kayma Animasyonu ile Komutlar */
-        .usage {
-            margin-top: 30px;
-            display: flex;
-            gap: 15px;
-            animation: slideRight 5s linear infinite;
-            white-space: nowrap;
-        }
+def scan_port(port, target_ip):
+    """Verilen IP adresi ve port için bağlantı sağlanıp sağlanamadığını kontrol eder."""
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(1)
+    try:
+        s.connect((target_ip, port))
+        return port, True
+    except:
+        return port, False
+    finally:
+        s.close()
 
-        .usage .example {
-            background-color: #1e1e1e;
-            padding: 15px;
-            border: 2px solid #33FF00;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-            color: #33FF00;
-            transition: transform 2s ease;
-        }
+@app.route('/nmap', methods=['GET', 'POST'])
+def nmap():
+    """IP tarama sayfası için route."""
+    if request.method == 'POST':
+        ip = request.form.get('ip')
+        ports = request.form.get('ports', '')
 
-        .usage .example:hover {
-            transform: scale(1.1);
-        }
+        # IP adresi ve portlar girilmiş mi?
+        if not ip:
+            return render_template('nmap.html', result="IP address is required.")
 
-        /* Kayma Animasyonu Tanımları */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+        # Portlar belirtilmediyse tüm portlar taranır
+        if not ports:
+            ports = range(1, 65536)
+        else:
+            ports = list(map(int, ports.split(',')))  # Verilen portları listeye çevirir
 
-        @keyframes slideIn {
-            from {
-                transform: translateY(-30px);
-            }
-            to {
-                transform: translateY(0);
-            }
-        }
+        # Portları paralel olarak taramak için ThreadPoolExecutor kullanılır
+        with ThreadPoolExecutor(max_workers=100) as executor:
+            results = executor.map(lambda port: scan_port(port, ip), ports)
 
-        @keyframes slideRight {
-            from {
-                transform: translateX(-100%);
-            }
-            to {
-                transform: translateX(100%);
-            }
-        }
+        # Sonuçları formatla ve ekrana yazdır
+        open_ports = [f"Port {port} is open" for port, is_open in results if is_open]
 
-        /* Side Panel (Yan Menü) */
-        .side-panel {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background-color: #333;
-            padding: 20px;
-            transition: 0.3s;
-            overflow-y: auto;
-            z-index: 100;
-        }
+        if open_ports:
+            result = "\n".join(open_ports)
+        else:
+            result = "No open ports found."
 
-        .side-panel.active {
-            left: 0;
-        }
+        return render_template('nmap.html', result=result)
 
-        .side-panel header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    return render_template('nmap.html')
 
-        .side-panel header img {
-            width: 180px;
-        }
+# Ana sayfa route'u
+@app.route('/')
+def home():
+    return render_template('menu.html')
 
-        .side-panel a {
-            display: block;
-            padding: 12px 20px;
-            margin: 10px 0;
-            text-decoration: none;
-            color: #fff;
-            font-size: 18px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
+# İletişim sayfası route'u
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
-        .side-panel a:hover {
-            background-color: #575757;
-        }
+# DNS Lookup sayfası
+@app.route('/dns_lookup')
+def dns_lookup():
+    return render_template('dns_lookup.html')
 
-        /* Menü Butonu */
-        .menu-btn {
-            font-size: 30px;
-            color: #fff;
-            background-color: #333;
-            border: none;
-            padding: 15px;
-            cursor: pointer;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 110;
-            transition: 0.3s;
-        }
+# Subdomain Lookup sayfası
+@app.route('/subdomain_lookup')
+def subdomain_lookup():
+    return render_template('subdomain_lookup.html')
 
-        .menu-btn:hover {
-            background-color: #444;
-        }
 
-        /* Get IntFramework Butonu */
-        .get-framework-btn {
-            margin-top: 30px;
-            padding: 15px 25px;
-            background-color: #33FF00;
-            border: none;
-            color: #121212;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-            transition: background-color 0.3s;
-        }
+# Dokümanlar sayfası
+@app.route('/docs')
+def docs():
+    return render_template('docs.html')
 
-        .get-framework-btn:hover {
-            background-color: #28a700;
-        }
+# İndir sayfası
+@app.route('/download')
+def download():
+    return render_template('download.html')
 
-        /* Responsive Tasarım */
-        @media (max-width: 768px) {
-            .side-panel {
-                width: 100%;
-                left: -100%;
-            }
-            .side-panel.active {
-                left: 0;
-            }
-            .menu-btn {
-                font-size: 25px;
-            }
-            .logo-container img {
-                width: 120px;
-            }
-            h1 {
-                font-size: 36px;
-            }
-            .usage {
-                flex-direction: column;
-                align-items: center;
-            }
-            .usage .example {
-                margin-bottom: 10px;
-            }
-            .description {
-                font-size: 16px;
-            }
-        }
+# Gizlilik politikası sayfası
+@app.route('/privacy_policy')
+def privacy_policy():
+    return render_template('privacy_policy.html')
 
-        @media (max-width: 480px) {
-            .logo-container img {
-                width: 100px;
-            }
-            h1 {
-                font-size: 28px;
-            }
-            .usage .example {
-                font-size: 16px;
-            }
-        }
-    </style>
-</head>
-<body>
+# Used Services sayfası
+@app.route('/used_services')
+def used_services():
+    return render_template('used_services.html')
 
-    <!-- Menü Butonu -->
-    <button class="menu-btn">&#9776; Menu</button>
+# Whois geçmişi sayfası
+@app.route('/whois_history')
+def whois_history():
+    return render_template('whois_history.html')
 
-    <!-- Side Panel (Yan Menü) -->
-    <div class="side-panel">
-        <header>
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="IntFramework Logo">
-        </header>
-        <a href="used_services">Used Services</a>
-        <a href="contact">Contact</a>
-        <a href="privacy_policy">Privacy Policy</a>
-        <a href="download">Download</a>
-        <a href="docs">Docs</a>
-        <div class="web-tools">
-            <h3>Web Tools</h3>
-            <a href="nmap">Nmap</a>
-            <a href="subdomain_lookup">Subdomain Lookup</a>
-            <a href="whois_history">WHOIS History</a>
-            <a href="dns_lookup">DNS Lookup</a>
-        </div>
-    </div>
+# Menü sayfası
+@app.route('/menu')
+def menu():
+    return render_template('menu.html')
 
-    <!-- Logo ve Başlık -->
-    <div class="logo-container">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="IntFramework Logo">
-        <h1>IntFramework Web GUI</h1>
-    </div>
-
-    <!-- Açıklamalar -->
-    <div class="description">
-        <p>Welcome to IntFramework Web GUI. A powerful tool for cybersecurity professionals.</p>
-    </div>
-
-    <!-- Kullanım Komutları (Yana Kayma Animasyonu) -->
-    <div class="usage">
-        <div class="example">run </div>
-        <div class="example">exploit</div>
-        <div class="example">use modules/exploits/multi/listeners/shellverse.py</div>
-        <div class="example">help</div>
-        <div class="example">modular</div>
-        <div class="example">intdc 0123456789</div>
-        <div class="example">intcam --ipv4 xxx.xxx.xxx.xxx -p 1900 -s -c </div>
-        <div class="example">use modules/exploits/linux/remote/ark_sink.c</div>
-        <div class="example">&quot;run &lt;192.168.1.1 90&gt;&quot;</div>
-        <div class="example">network_scan</div>
-    </div>
-
-    <!-- Get IntFramework Butonu -->
-    <button class="get-framework-btn" onclick="window.location.href='https://github.com/intSpLoiT/intframework/archive/refs/heads/İntframeworkV4.zip'">
-        Get IntFramework
-    </button>
-
-    <script>
-        // Menü Butonunu Aktif Hale Getirme
-        document.querySelector('.menu-btn').addEventListener('click', function() {
-            document.querySelector('.side-panel').classList.toggle('active');
-        });
-    </script>
-</body>
-</html>
+if __name__ == "__main__":
+    app.run(debug=True)
