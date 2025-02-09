@@ -1,1 +1,24 @@
+name: run_python
+on:  
+  push:  
+    branches:
+      - main  # Main branch'e her push yapıldığında çalışır
+  workflow_dispatch:  # Manuel olarak da çalıştırılabilir
 
+jobs:
+  run_script:
+    runs-on: ubuntu-latest  # Ubuntu ortamında çalıştır
+    steps:
+      - name: Depoyu Klonla
+        uses: actions/checkout@v3
+        
+      - name: Python Kur
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Gerekli Paketleri Kur
+        run: pip install -r requirements.txt  # Eğer bağımlılıklar varsa
+
+      - name: Python Script'ini Çalıştır
+        run: python3 main.py
