@@ -1,36 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+
 body {
-  background-color: black;
-  color: #00ff00;
-  font-family: monospace;
-  padding: 10px;
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Source Code Pro', monospace;
+    margin: 0;
+    overflow: hidden;
+}
+
+#matrix {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    white-space: nowrap;
+    color: #0f0;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 0 5px #0f0;
 }
 
 #console {
-  white-space: pre-wrap;
+    display: none;
+    padding: 20px;
+    font-size: 18px;
+    white-space: pre-line;
+    border-left: 3px solid #0f0;
+    margin-top: 50px;
+    animation: fadeIn 1s ease-in-out;
 }
 
-.btn {
-  display: inline-block;
-  padding: 5px 10px;
-  margin-top: 5px;
-  background-color: #00ff00;
-  color: black;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 14px;
+a {
+    color: cyan;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-.btn:hover {
-  background-color: #008000;
+a:hover {
+    text-shadow: 0 0 10px cyan;
 }
 
-.matrix {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Havalı Butonlar */
+.button {
+    display: inline-block;
+    background: transparent;
+    border: 2px solid cyan;
+    color: cyan;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px cyan;
+    animation: glow 1.5s infinite alternate;
+}
+
+.button:hover {
+    background: cyan;
+    color: black;
+    box-shadow: 0 0 20px cyan;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px cyan;
+    }
+    to {
+        box-shadow: 0 0 20px cyan;
+    }
 }
