@@ -1,87 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
-
+/* Temel Stil */
 body {
-    background-color: #000;
-    color: #0f0;
-    font-family: 'Source Code Pro', monospace;
+    background-color: black;
+    color: #00ff00;
+    font-family: 'Press Start 2P', monospace;
+    text-align: center;
     margin: 0;
+    padding: 0;
     overflow: hidden;
 }
 
+/* Matrix Loading Efekti */
 #matrix {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    font-size: 18px;
-    white-space: nowrap;
-    color: #0f0;
-    background: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-shadow: 0 0 5px #0f0;
+    font-size: 30px;
+    font-weight: bold;
+    animation: flicker 1.5s infinite alternate;
+    margin-top: 20%;
 }
 
-#console {
+@keyframes flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.2; }
+    100% { opacity: 1; }
+}
+
+/* Terminal Efekti */
+.hidden {
     display: none;
-    padding: 20px;
-    font-size: 18px;
-    white-space: pre-line;
-    border-left: 3px solid #0f0;
-    margin-top: 50px;
-    animation: fadeIn 1s ease-in-out;
 }
 
-a {
-    color: cyan;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-shadow: 0 0 10px cyan;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Havalı Butonlar */
-.button {
+/* Terminal Yazıları */
+#typing {
+    font-size: 20px;
+    text-align: left;
+    margin-left: 20px;
     display: inline-block;
-    background: transparent;
-    border: 2px solid cyan;
-    color: cyan;
-    padding: 10px 20px;
+    border-right: 3px solid #00ff00;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: neonGlow 1.5s infinite alternate;
+}
+
+/* Neon Efekt */
+@keyframes neonGlow {
+    0% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+    100% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; }
+}
+
+/* Glitch Efekti */
+@keyframes glitch {
+    0% { text-shadow: 3px 0 red, -3px 0 blue; }
+    50% { text-shadow: -3px 0 red, 3px 0 blue; }
+    100% { text-shadow: 3px 0 red, -3px 0 blue; }
+}
+
+/* Butonlar */
+.button {
+    background: black;
+    color: #00ff00;
     font-size: 18px;
-    font-weight: bold;
-    margin: 10px;
+    border: 2px solid #00ff00;
+    padding: 12px 24px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    text-align: center;
-    text-transform: uppercase;
-    box-shadow: 0 0 10px cyan;
-    animation: glow 1.5s infinite alternate;
+    margin: 10px;
+    transition: 0.3s ease-in-out;
+    display: inline-block;
+    animation: fadeIn 2s ease-in-out, glitch 0.2s infinite;
 }
 
 .button:hover {
-    background: cyan;
+    background: #00ff00;
     color: black;
-    box-shadow: 0 0 20px cyan;
+    transform: scale(1.1);
 }
 
-@keyframes glow {
-    from {
-        box-shadow: 0 0 10px cyan;
-    }
-    to {
-        box-shadow: 0 0 20px cyan;
-    }
+/* Fade In Animasyonu */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
