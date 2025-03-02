@@ -4,56 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>intSpLoiT Terminal</title>
-    <style>
-        body {
-            background-color: black;
-            color: #00ff00;
-            font-family: monospace;
-            font-size: 16px;
-            padding: 20px;
-            overflow: hidden;
-        }
-        #terminal {
-            white-space: pre-wrap;
-            line-height: 1.5;
-            display: none; /* Terminal başlangıçta gizli */
-        }
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 16px;
-            background-color: #00ff00;
-            animation: blink 0.7s infinite alternate;
-        }
-        @keyframes blink {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        .matrix {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            background: black;
-        }
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        a {
-            color: #00ff00;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -63,81 +14,7 @@
 
     <div id="terminal"></div>
 
-    <script>
-        const terminal = document.getElementById("terminal");
-        const messages = [
-            "Scanning network...",
-            "Exploiting vulnerabilities...",
-            "Bypassing security protocols...",
-            "Initializing intSpLoiT Framework...",
-            "Created by a talented developer: intSpLoiT",
-            "GitHub Repository: <a href='https://github.com/intSpLoiT' target='_blank'>github.com/intSpLoiT</a>",
-            "Official Blog: <a href='#' onclick='alert(\"Blog is under construction...\"); return false;'>Coming Soon...</a>",
-            "root@intSpLoiT:~# "
-        ];
-        let index = 0;
-
-        function typeMessage() {
-            if (index < messages.length) {
-                let line = messages[index];
-                let charIndex = 0;
-                
-                function typeChar() {
-                    if (charIndex < line.length) {
-                        terminal.innerHTML += line[charIndex];
-                        charIndex++;
-                        setTimeout(typeChar, 50);
-                    } else {
-                        terminal.innerHTML += "<br>";
-                        index++;
-                        setTimeout(typeMessage, 500);
-                    }
-                }
-                typeChar();
-            } else {
-                terminal.innerHTML += '<span class="cursor"></span>';
-            }
-        }
-
-        // Matrix Efekti
-        const canvas = document.getElementById("matrixCanvas");
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const columns = Math.floor(canvas.width / 10);
-        const drops = Array(columns).fill(0);
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = "#00ff00";
-            ctx.font = "15px monospace";
-
-            for (let i = 0; i < drops.length; i++) {
-                let text = chars.charAt(Math.floor(Math.random() * chars.length));
-                ctx.fillText(text, i * 10, drops[i] * 10);
-
-                if (drops[i] * 10 > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
-        let matrixInterval = setInterval(drawMatrix, 50);
-
-        // 5 saniye sonra Matrix efekti kaybolacak ve terminal açılacak
-        setTimeout(() => {
-            clearInterval(matrixInterval);
-            document.querySelector(".matrix").style.display = "none";
-            terminal.style.display = "block";
-            typeMessage();
-        }, 5000);
-
-    </script>
+    <script src="script.js"></script>
 
 </body>
 </html>
