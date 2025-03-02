@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const buttons = document.getElementById("buttons");
 
     function playTypingSound() {
-        const audio = new Audio("https://www.myinstants.com/media/sounds/keyboard.mp3");
+        const audio = new Audio("https://www.fesliyanstudios.com/play-mp3/387");
+        audio.volume = 0.2;
         audio.play();
     }
 
@@ -28,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 typingElement.innerHTML += text[i][j];
                 j++;
                 playTypingSound();
-                setTimeout(type, Math.random() * 80 + 20); // Rastgele hız
+                setTimeout(type, Math.random() * 100 + 30);
             } else {
                 typingElement.innerHTML += "\n";
                 j = 0;
