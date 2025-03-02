@@ -1,48 +1,47 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Matrix efekti 5 saniye sürecek
-    setTimeout(() => {
-        $("#matrix").fadeOut(1000, function() {
-            $("#console").fadeIn(1000);
-            startTerminalEffect();
-        });
-    }, 5000);
+    const text = [
+        "root@intSpLoiT:~# Initializing system...",
+        "root@intSpLoiT:~# Connecting to secure servers...",
+        "root@intSpLoiT:~# Verifying integrity...",
+        "root@intSpLoiT:~# Fetching latest repositories...",
+        "root@intSpLoiT:~# Compiling kernel modules...",
+        "root@intSpLoiT:~# Loading AI modules...",
+        "root@intSpLoiT:~# Enabling encryption protocols...",
+        "root@intSpLoiT:~# Welcome to intSpLoiT Framework!",
+        "root@intSpLoiT:~# Access granted!"
+    ];
+
+    let i = 0;
+    let j = 0;
+    const typingElement = document.getElementById("typing");
+    const cursor = document.getElementById("cursor");
+    const buttons = document.getElementById("buttons");
+
+    function playTypingSound() {
+        const audio = new Audio("https://www.myinstants.com/media/sounds/keyboard.mp3");
+        audio.play();
+    }
+
+    function type() {
+        if (i < text.length) {
+            if (j < text[i].length) {
+                typingElement.innerHTML += text[i][j];
+                j++;
+                playTypingSound();
+                setTimeout(type, Math.random() * 80 + 20); // Rastgele hız
+            } else {
+                typingElement.innerHTML += "\n";
+                j = 0;
+                i++;
+                setTimeout(type, 500);
+            }
+        } else {
+            setTimeout(() => {
+                cursor.style.display = "none";
+                buttons.style.display = "block";
+            }, 1000);
+        }
+    }
+
+    type();
 });
-
-function startTerminalEffect() {
-    let typewriter = new Typewriter(document.getElementById("typing"), {
-        loop: false,
-        delay: 80 // Yazı hızı yavaşlatıldı (daha gerçekçi olsun diye)
-    });
-
-    // Klavye sesi
-    let typingSound = document.getElementById("typingSound");
-
-    typewriter
-        .callFunction(() => typingSound.play()) // Klavye sesi başlasın
-        .typeString('root@intSpLoiT:~# Initializing system...')
-        .pauseFor(1200)
-        .deleteAll()
-        .typeString('root@intSpLoiT:~# Fetching resources...')
-        .pauseFor(1200)
-        .deleteAll()
-        .typeString('root@intSpLoiT:~# Scanning network...')
-        .pauseFor(1200)
-        .deleteAll()
-        .typeString('root@intSpLoiT:~# Exploit modules loaded...')
-        .pauseFor(1200)
-        .deleteAll()
-        .typeString('root@intSpLoiT:~# Checking vulnerabilities...')
-        .pauseFor(1200)
-        .deleteAll()
-        .typeString('root@intSpLoiT:~# System Ready!')
-        .pauseFor(1200)
-        .callFunction(() => {
-            typingSound.pause(); // Klavye sesi dursun
-            typingSound.currentTime = 0;
-        })
-        .callFunction(() => {
-            // Terminal efektinden sonra butonları göster
-            $("#buttons").fadeIn(1000).css("opacity", "1");
-        })
-        .start();
-}
