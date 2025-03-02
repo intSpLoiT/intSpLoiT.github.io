@@ -1,88 +1,57 @@
-var Typer = {
-  text: '',
-  index: 0,
-  speed: 2,
-  file: '',
-  
-  init: function () {
-    fetch(Typer.file)
-      .then(response => response.text())
-      .then(data => {
-        Typer.text = data;
-        Typer.text = Typer.text.trim();
-      });
+document.addEventListener("DOMContentLoaded", function () {
+    const matrix = document.getElementById("matrix");
+    const consoleDiv = document.getElementById("console");
+    const typingDiv = document.getElementById("typing");
 
-    setInterval(Typer.updLstChr, 500);
-  },
-
-  content: function () {
-    return document.getElementById('console').innerHTML;
-  },
-
-  write: function (str) {
-    document.getElementById('console').innerHTML += str;
-  },
-
-  addText: function () {
-    if (Typer.text) {
-      var cont = Typer.content();
-      if (cont.endsWith('|')) {
-        document.getElementById('console').innerHTML = cont.slice(0, -1);
-      }
-
-      Typer.index += Typer.speed;
-      var text = Typer.text.substring(0, Typer.index).replace(/\n/g, '<br/>');
-      document.getElementById('console').innerHTML = text;
-
-      window.scrollBy(0, 50);
-    }
-  },
-
-  updLstChr: function () {
-    var cont = Typer.content();
-    if (cont.endsWith('|')) {
-      document.getElementById('console').innerHTML = cont.slice(0, -1);
-    } else {
-      Typer.write('|');
-    }
-  },
-};
-
-// **Matrix Efekti**
-const canvas = document.getElementById("matrixCanvas");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const columns = Math.floor(canvas.width / 10);
-const drops = Array(columns).fill(0);
-const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
-function drawMatrix() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#00ff00";
-    ctx.font = "15px monospace";
-
-    for (let i = 0; i < drops.length; i++) {
-        let text = chars.charAt(Math.floor(Math.random() * chars.length));
-        ctx.fillText(text, i * 10, drops[i] * 10);
-
-        if (drops[i] * 10 > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
+    function startMatrix() {
+        let chars = "01";
+        let matrixText = "";
+        for (let i = 0; i < 500; i++) {
+            matrixText += chars[Math.floor(Math.random() * chars.length)];
         }
-        drops[i]++;
+        matrix.innerHTML = `<span>${matrixText}</span>`;
     }
-}
-let matrixInterval = setInterval(drawMatrix, 50);
+    let matrixInterval = setInterval(startMatrix, 100);
 
-// **5 saniye sonra Matrix efekti kapanacak ve terminal açılacak**
-setTimeout(() => {
-    clearInterval(matrixInterval);
-    document.querySelector(".matrix").remove();
-    document.getElementById("terminal").style.display = "block";
-    Typer.init();
-    setInterval(() => Typer.addText(), 50);
-}, 5000);
+    // 5 saniye sonra Matrix'i kapat ve Terminal'i başlat
+    setTimeout(() => {
+        clearInterval(matrixInterval);
+        matrix.style.display = "none";
+        consoleDiv.style.display = "block";
+
+        startTerminal();
+    }, 5000);
+
+    function startTerminal() {
+        new Typewriter(typingDiv, {
+            loop: false,
+            delay: 50,
+        })
+            .typeString("root@intSpLoiT:~# System booting up...<br>")
+            .pauseFor(500)
+            .typeString("root@intSpLoiT:~# Checking security protocols...<br>")
+            .pauseFor(500)
+            .typeString("root@intSpLoiT:~# Loading intSpLoiT modules...<br>")
+            .pauseFor(500)
+            .typeString("root@intSpLoiT:~# Verifying user identity...<br>")
+            .pauseFor(500)
+            .typeString("root@intSpLoiT:~# Access granted!<br>")
+            .pauseFor(500)
+            .typeString("root@intSpLoiT:~# Welcome, intSpLoiT user.<br>")
+            .pauseFor(500)
+            .typeString("root@intSpLoiT:~# Fetching latest exploits...<br>")
+            .pauseFor(500)
+            .typeString("root@intSpLoiT:~# Connection to GitHub established!<br>")
+            .pauseFor(500)
+            .typeString(
+                'root@intSpLoiT:~# GitHub: <a href="https://github.com/intSpLoiT" target="_blank">https://github.com/intSpLoiT</a><br>'
+            )
+            .pauseFor(500)
+            .typeString(
+                'root@intSpLoiT:~# Blog: <a href="#" onclick="alert(\'Hazırlanıyor...\')">Hazırlanıyor...</a><br>'
+            )
+            .pauseFor(500)
+            .typeString("root@intSpLoiT:~# Terminal ready.<br>")
+            .start();
+    }
+});
