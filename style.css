@@ -46,14 +46,13 @@ body {
     100% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; }
 }
 
-/* Glitch Efekti */
-@keyframes glitch {
-    0% { text-shadow: 3px 0 red, -3px 0 blue; }
-    50% { text-shadow: -3px 0 red, 3px 0 blue; }
-    100% { text-shadow: 3px 0 red, -3px 0 blue; }
+/* Butonlar */
+#buttons {
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
 
-/* Butonlar */
 .button {
     background: black;
     color: #00ff00;
@@ -64,7 +63,7 @@ body {
     margin: 10px;
     transition: 0.3s ease-in-out;
     display: inline-block;
-    animation: fadeIn 2s ease-in-out, glitch 0.2s infinite;
+    animation: glitch 0.2s infinite;
 }
 
 .button:hover {
@@ -73,8 +72,9 @@ body {
     transform: scale(1.1);
 }
 
-/* Fade In Animasyonu */
-@keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
+/* Glitch Efekti */
+@keyframes glitch {
+    0% { text-shadow: 3px 0 red, -3px 0 blue; }
+    50% { text-shadow: -3px 0 red, 3px 0 blue; }
+    100% { text-shadow: 3px 0 red, -3px 0 blue; }
 }
