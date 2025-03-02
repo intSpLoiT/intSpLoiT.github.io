@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>intSpLoiT Terminal</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typewriter-effect/2.18.0/core.min.js"></script>
 </head>
 <body>
 
-<canvas id="matrixCanvas" class="matrix"></canvas>
+    <div id="matrix">Loading...</div>
 
-<div id="terminal" style="display: none;">
-  <div id="console">root@intSpLoiT:~# </div>
-  <br>
-  <button onclick="window.open('https://github.com/intSpLoiT', '_blank');" class="btn">GitHub</button>
-  <button onclick="alert('Blog is under construction...');" class="btn">Visit Blog</button>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/typewriter-effect/2.18.0/core.min.js"></script>
-<script src="script.js"></script>
+    <div id="console">
+        <div id="typing"></div>
+        <br>
+        <button class="button" onclick="window.open('https://github.com/intSpLoiT', '_blank')">GitHub</button>
+        <button class="button" onclick="alert('Blog is being prepared...')">Blog</button>
+        <button class="button" onclick="alert('New features coming soon!')">About</button>
+    </div>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
