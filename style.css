@@ -1,80 +1,45 @@
-/* Temel Stil */
 body {
     background-color: black;
-    color: #00ff00;
-    font-family: 'Press Start 2P', monospace;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-/* Matrix Loading Efekti */
-#matrix {
-    font-size: 30px;
-    font-weight: bold;
-    animation: flicker 1.5s infinite alternate;
-    margin-top: 20%;
-}
-
-@keyframes flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0.2; }
-    100% { opacity: 1; }
-}
-
-/* Terminal Efekti */
-.hidden {
-    display: none;
-}
-
-/* Terminal Yazıları */
-#typing {
-    font-size: 20px;
+    color: #33ff33;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    padding: 20px;
     text-align: left;
-    margin-left: 20px;
-    display: inline-block;
-    border-right: 3px solid #00ff00;
-    white-space: nowrap;
     overflow: hidden;
-    animation: neonGlow 1.5s infinite alternate;
 }
 
-/* Neon Efekt */
-@keyframes neonGlow {
-    0% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
-    100% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; }
+#console {
+    white-space: pre-wrap;
+    overflow: hidden;
+    border-left: 3px solid #33ff33;
+    padding-left: 10px;
+    height: 300px;
 }
 
-/* Butonlar */
-#buttons {
-    margin-top: 20px;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
+#cursor {
+    animation: blink 0.6s infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
 }
 
 .button {
     background: black;
-    color: #00ff00;
+    color: #33ff33;
+    border: 1px solid #33ff33;
+    padding: 10px;
     font-size: 18px;
-    border: 2px solid #00ff00;
-    padding: 12px 24px;
     cursor: pointer;
-    margin: 10px;
-    transition: 0.3s ease-in-out;
-    display: inline-block;
-    animation: glitch 0.2s infinite;
+    display: block;
+    margin-top: 10px;
+    transition: 0.3s;
 }
 
 .button:hover {
-    background: #00ff00;
+    background: #33ff33;
     color: black;
     transform: scale(1.1);
-}
-
-/* Glitch Efekti */
-@keyframes glitch {
-    0% { text-shadow: 3px 0 red, -3px 0 blue; }
-    50% { text-shadow: -3px 0 red, 3px 0 blue; }
-    100% { text-shadow: 3px 0 red, -3px 0 blue; }
 }
