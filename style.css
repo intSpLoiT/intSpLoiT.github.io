@@ -1,0 +1,48 @@
+body {
+    background-color: black;
+    color: #00ff00;
+    font-family: monospace;
+    font-size: 16px;
+    padding: 20px;
+    overflow: hidden;
+}
+#terminal {
+    white-space: pre-wrap;
+    line-height: 1.5;
+    display: none;
+}
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 16px;
+    background-color: #00ff00;
+    animation: blink 0.7s infinite alternate;
+}
+@keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+.matrix {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background: black;
+}
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+a {
+    color: #00ff00;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
