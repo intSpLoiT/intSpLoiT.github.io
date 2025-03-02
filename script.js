@@ -1,40 +1,52 @@
-const terminal = document.getElementById("terminal");
-const messages = [
-    "Scanning network...",
-    "Exploiting vulnerabilities...",
-    "Bypassing security protocols...",
-    "Connecting to intSpLoiT framework...",
-    "Downloading payloads...",
-    "intSpLoiT Framework initialized successfully!",
-    "Developer: intSpLoiT (Kral)",
-    "GitHub: <a href='https://github.com/intSpLoiT' target='_blank'>github.com/intSpLoiT</a>",
-    "Blog: <a href='#' onclick='alert(\"Blog is under construction...\"); return false;'>Coming Soon...</a>",
-    "root@intSpLoiT:~# "
-];
-let index = 0;
+var Typer = {
+  text: '',
+  index: 0,
+  speed: 2,
+  file: '',
+  
+  init: function () {
+    fetch(Typer.file)
+      .then(response => response.text())
+      .then(data => {
+        Typer.text = data;
+        Typer.text = Typer.text.trim();
+      });
 
-function typeMessage() {
-    if (index < messages.length) {
-        let line = messages[index];
-        let charIndex = 0;
-        
-        function typeChar() {
-            if (charIndex < line.length) {
-                terminal.innerHTML += line[charIndex];
-                charIndex++;
-                setTimeout(typeChar, 50);
-            } else {
-                terminal.innerHTML += "<br>";
-                index++;
-                let delay = index === messages.length - 1 ? 200 : 500;
-                setTimeout(typeMessage, delay);
-            }
-        }
-        typeChar();
-    } else {
-        terminal.innerHTML += '<span class="cursor"></span>';
+    setInterval(Typer.updLstChr, 500);
+  },
+
+  content: function () {
+    return document.getElementById('console').innerHTML;
+  },
+
+  write: function (str) {
+    document.getElementById('console').innerHTML += str;
+  },
+
+  addText: function () {
+    if (Typer.text) {
+      var cont = Typer.content();
+      if (cont.endsWith('|')) {
+        document.getElementById('console').innerHTML = cont.slice(0, -1);
+      }
+
+      Typer.index += Typer.speed;
+      var text = Typer.text.substring(0, Typer.index).replace(/\n/g, '<br/>');
+      document.getElementById('console').innerHTML = text;
+
+      window.scrollBy(0, 50);
     }
-}
+  },
+
+  updLstChr: function () {
+    var cont = Typer.content();
+    if (cont.endsWith('|')) {
+      document.getElementById('console').innerHTML = cont.slice(0, -1);
+    } else {
+      Typer.write('|');
+    }
+  },
+};
 
 // **Matrix Efekti**
 const canvas = document.getElementById("matrixCanvas");
@@ -70,6 +82,7 @@ let matrixInterval = setInterval(drawMatrix, 50);
 setTimeout(() => {
     clearInterval(matrixInterval);
     document.querySelector(".matrix").remove();
-    terminal.style.display = "block";
-    typeMessage();
+    document.getElementById("terminal").style.display = "block";
+    Typer.init();
+    setInterval(() => Typer.addText(), 50);
 }, 5000);
