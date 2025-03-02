@@ -4,14 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>intSpLoiT Terminal</title>
+    
+    <!-- CSS Dosyamız -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Kütüphaneler -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typewriter-effect/2.18.0/core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <!-- Google Fonts - Hacker Yazı Tipi -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
+    <!-- Matrix Loading Efekti -->
     <div id="matrix">Loading...</div>
 
-    <div id="console">
+    <!-- Terminal Ekranı -->
+    <div id="console" class="hidden">
         <div id="typing"></div>
         <br>
         <button class="button" onclick="window.open('https://github.com/intSpLoiT', '_blank')">GitHub</button>
@@ -19,6 +30,7 @@
         <button class="button" onclick="alert('New features coming soon!')">About</button>
     </div>
 
+    <!-- JavaScript Dosyamız -->
     <script src="script.js"></script>
 
 </body>
